@@ -131,7 +131,7 @@ const SignIn = (props) => {
     Keyboard.dismiss();
   }
   const handleCreateAccount = () => {
-    navigation.navigate('SignUpStack', { screen: 'SignUpUsername' });
+    navigation.navigate('SignUpStack', { screen: 'SignUpUserSignin' });
   }
   const handleFogotPassword = () => {
     signOut();

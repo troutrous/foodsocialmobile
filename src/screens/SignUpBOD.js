@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import DatePicker from 'react-native-date-picker'
+import { useDispatch, useSelector } from 'react-redux';
+import { addUserBOD } from '../actions';
 
 import StyleSignUpName from '../themes/StyleSignUpName';
 
 const SignUpBOD = (props) => {
   const { navigation } = props;
   const { route } = props;
-  const [BOD, setBOD] = useState(new Date());
+  const dispatch = useDispatch();
+  const userBODRedux = useSelector(state => state.sign.userBOD);
+  const [userBOD, setUserBOD] = useState(new Date(userBODRedux));
   const handleOnDateChange = (value) => {
-    setBOD(value);
+    setUserBOD(value);
   }
   const handleNextSignUp = () => {
-    console.log(BOD);
+    dispatch(addUserBOD(userBOD.toJSON().slice(0, 10)));
     navigation.navigate('SignUpGender');
   };
   const handleWithoutFeedback = () => {
@@ -23,7 +27,7 @@ const SignUpBOD = (props) => {
       <View style={StyleSignUpName.viewContainer}>
         <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.labelHeader]}>What's your name?</Text>
         <DatePicker
-          date={BOD}
+          date={userBOD}
           onDateChange={(value) => handleOnDateChange(value)}
           androidVariant={'nativeAndroid'}
           mode={'date'}
@@ -31,7 +35,7 @@ const SignUpBOD = (props) => {
           maximumDate={new Date()}
         />
         {
-          ((Math.abs(BOD - new Date())) / (1000 * 60 * 60 * 24) >= 365 * 12) 
+          ((Math.abs(userBOD - new Date())) / (1000 * 60 * 60 * 24) >= 365 * 12) 
           && (
             <TouchableOpacity style={StyleSignUpName.buttonNext} onPress={handleNextSignUp}>
               <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.textButtonNext]}>Next</Text>

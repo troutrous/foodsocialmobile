@@ -2,24 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity, TouchableHighlight } from 'react-native';
 import StyleSignUpName from '../themes/StyleSignUpName';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUserGender } from '../actions';
 
 const SignUpGender = (props) => {
     const { navigation } = props;
     const { route } = props;
-
-    const [gender, setGender] = useState('');
+    const dispatch = useDispatch();
+    const userGenderRedux = useSelector(state => state.sign.userGender);
+    const [userGender, setUserGender] = useState(userGenderRedux);
 
     const handleWithoutFeedback = () => {
         Keyboard.dismiss();
     };
     const handleNextSignUp = () => {
+        dispatch(addUserGender(userGender));
         navigation.navigate('SignUpAddress');
     };
     const handleOptionMale = () => {
-        setGender('Male');
+        setUserGender(0);
     };
     const handleOptionFemale = () => {
-        setGender('Female');
+        setUserGender(1);
     };
     return (
         <TouchableWithoutFeedback onPress={handleWithoutFeedback}>
@@ -31,7 +35,7 @@ const SignUpGender = (props) => {
                         <View style={StyleSignUpName.optionsContainer}>
                             <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.labelOptions]}>Male</Text>
                             {
-                                gender === "Male" && (<MaterialIcons name='radio-button-on' size={18} color='#23156a' />) || <MaterialIcons name='radio-button-off' size={18} color='#6b6b6b' />
+                                userGender === 0 && (<MaterialIcons name='radio-button-on' size={18} color='#23156a' />) || <MaterialIcons name='radio-button-off' size={18} color='#6b6b6b' />
                             }
                         </View>
                     </TouchableWithoutFeedback>
@@ -39,13 +43,13 @@ const SignUpGender = (props) => {
                         <View style={StyleSignUpName.optionsContainer}>
                             <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.labelOptions]}>Female</Text>
                             {
-                                gender === "Female" && (<MaterialIcons name='radio-button-on' size={18} color='#23156a' />) || <MaterialIcons name='radio-button-off' size={18} color='#6b6b6b' />
+                                userGender === 1 && (<MaterialIcons name='radio-button-on' size={18} color='#23156a' />) || <MaterialIcons name='radio-button-off' size={18} color='#6b6b6b' />
                             }
                         </View>
                     </TouchableWithoutFeedback>
                 </View>
                 {
-                    gender && (
+                    userGender != null && (
                         <TouchableOpacity style={StyleSignUpName.buttonNext} onPress={handleNextSignUp}>
                             <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.textButtonNext]}>Next</Text>
                         </TouchableOpacity>

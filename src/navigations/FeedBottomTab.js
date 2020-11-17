@@ -4,9 +4,6 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import NewFeedStack from './NewFeedStack';
-import ProfileStack from './ProfileStack';
-
 import Notification from '../screens/Notification';
 import Profile from '../screens/Profile';
 import Search from '../screens/Search';
@@ -21,10 +18,14 @@ const FeedBottomTab = ({ navigation, route }) => {
     useLayoutEffect(() => {
         if (getFocusedRouteNameFromRoute(route) == "NewFeed") {
             navigation.setOptions({ headerTitle: () => <HeaderNewFeed /> });
-        } else {
+        }
+        else {
             navigation.setOptions({ headerTitle: () => <HeaderProfile /> });
         }
     })
+    useLayoutEffect(() => {
+        navigation.setOptions({ headerTitle: () => <HeaderNewFeed /> });
+    }, [])
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -45,6 +46,7 @@ const FeedBottomTab = ({ navigation, route }) => {
                     }
                     return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
                 },
+                headerTitle: () => <HeaderNewFeed />
             })}
             tabBarOptions={{
                 activeTintColor: '#23156a',

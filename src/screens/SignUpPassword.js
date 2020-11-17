@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, Keyboard, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { addUserPassword } from '../actions';
 import StyleSignUpName from '../themes/StyleSignUpName';
 
 const SignUpPassword = (props) => {
     const { navigation } = props;
     const { route } = props;
-    const { signupProfile } = route.params;
-
-    const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
+    const userPasswordRedux = useSelector(state => state.sign.userPassword);
+    const [userPassword, setUserPassword] = useState(userPasswordRedux);
     const [enterpassword, setEnterassword] = useState('');
-
-    useEffect(() => {
-        console.log(signupProfile);
-    },[password]);
 
     const handleWithoutFeedback = () => {
         Keyboard.dismiss();
     };
     const handleNextSignUp = () => {
-        if (password === enterpassword) {
+        if (userPassword === enterpassword) {
+            dispatch(addUserPassword(userPassword))
             navigation.navigate('SignUpName');
             return;
         }
@@ -31,8 +30,7 @@ const SignUpPassword = (props) => {
         );
     };
     const handleChangePassword = (value) => {
-        setPassword(value);
-        signupProfile.userPassword = value;
+        setUserPassword(value);
     };
     const handleChangeEnterpassword = (value) => {
         setEnterassword(value);
@@ -42,13 +40,22 @@ const SignUpPassword = (props) => {
             <View style={StyleSignUpName.viewContainer}>
                 <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.labelHeader]}>What's your password?</Text>
                 <View style={StyleSignUpName.addressContainer}>
-                    <TextInput onChangeText={(value) => handleChangePassword(value)} value={password} placeholder={'Password'} style={[StyleSignUpName.fontSemiBold, StyleSignUpName.textInputAddress]} autoFocus secureTextEntry></TextInput>
+                    <TextInput
+                        onChangeText={(value) => handleChangePassword(value)}
+                        value={userPassword} placeholder={'Password'}
+                        style={[StyleSignUpName.fontSemiBold, StyleSignUpName.textInputAddress]}
+                        autoFocus
+                        secureTextEntry></TextInput>
                 </View>
                 <View style={StyleSignUpName.addressContainer}>
-                    <TextInput onChangeText={(value) => handleChangeEnterpassword(value)} value={enterpassword} placeholder={'Enter password'} style={[StyleSignUpName.fontSemiBold, StyleSignUpName.textInputAddress]} secureTextEntry></TextInput>
+                    <TextInput
+                        onChangeText={(value) => handleChangeEnterpassword(value)}
+                        value={enterpassword} placeholder={'Enter password'}
+                        style={[StyleSignUpName.fontSemiBold, StyleSignUpName.textInputAddress]}
+                        secureTextEntry></TextInput>
                 </View>
                 {
-                    password && enterpassword && (
+                    userPassword && enterpassword && (
                         <TouchableOpacity style={StyleSignUpName.buttonNext} onPress={handleNextSignUp}>
                             <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.textButtonNext]}>Next</Text>
                         </TouchableOpacity>

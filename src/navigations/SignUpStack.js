@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import SignUpUsername from '../screens/SignUpUsername';
+import SignUpUserSignin from '../screens/SignUpUserSignin';
 import SignUpPassword from '../screens/SignUpPassword';
 import SignUpName from '../screens/SignUpName';
 import SignUpEmail from '../screens/SignUpEmail';
@@ -14,7 +14,7 @@ const Stack = createStackNavigator();
 const SignUpStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="SignUpUsername" component={SignUpUsername} options={SignUpUsername.navigationOptions} />
+      <Stack.Screen name="SignUpUsername" component={SignUpUserSignin} options={SignUpUserSignin.navigationOptions} />
       <Stack.Screen name="SignUpPassword" component={SignUpPassword} options={SignUpPassword.navigationOptions} />
       <Stack.Screen name="SignUpName" component={SignUpName} options={SignUpName.navigationOptions} />
       <Stack.Screen name="SignUpEmail" component={SignUpEmail} options={SignUpEmail.navigationOptions} />

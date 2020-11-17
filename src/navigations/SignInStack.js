@@ -10,15 +10,16 @@ const Stack = createStackNavigator();
 
 const SignInStack = () => {
     return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name="SignIn" component={SignIn} options={SignIn.navigationOptions} />
-                <Stack.Screen name="SignUpStack" component={SignUpStack} options={SignUpStack.navigationOptions}/>
-                <Stack.Screen name="NewFeed" component={NewFeed} options={NewFeed.navigationOptions}/>
-            </Stack.Navigator>
-        </NavigationContainer>
+        <Stack.Navigator>
+            <Stack.Screen name="SignIn" component={SignIn} options={SignIn.navigationOptions} />
+            <Stack.Screen name="SignUpStack" component={SignUpStack} options={SignUpStack.navigationOptions} />
+        </Stack.Navigator>
     );
 }
 
-  
+SignInStack.navigationOptions = {
+    headerShown: false,
+};
+
+
 export default SignInStack;
