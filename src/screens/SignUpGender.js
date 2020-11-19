@@ -25,6 +25,9 @@ const SignUpGender = (props) => {
     const handleOptionFemale = () => {
         setUserGender(1);
     };
+    useEffect(() => {
+        Keyboard.dismiss();
+      }, []);
     return (
         <TouchableWithoutFeedback onPress={handleWithoutFeedback}>
             <View style={StyleSignUpName.viewContainer}>

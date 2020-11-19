@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpa
 import StyleSignUpName from '../themes/StyleSignUpName';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUserEmail } from '../actions';
+import { checkExistProfileByEmail } from '../api/Sign';
 
 const SignUpEmail = (props) => {
     const { navigation } = props;
@@ -18,31 +19,19 @@ const SignUpEmail = (props) => {
         setUserEmail(value);
     };
     const handleNextSignUp = async () => {
-        // fetch('http://192.168.1.16:3000/auth/checkexistprofilebyemail', {
-        //     method: 'POST',
-        //     cache: 'no-cache',
-        //     headers: {
-        //         Accept: 'application/json',
-        //         'Content-Type': 'application/json; charset = utf-8'
-        //     },
-        //     body: JSON.stringify({
-        //         userSignin: email
-        //     })
-        // })
-        //     .then((response) => response.json())
-        //     .then((dataResponse) => {
-        //         !dataResponse.checkExistProfileByEmail ? navigation.navigate('SignUpBOD') :
-        //             Alert.alert(
-        //                 "Opps",
-        //                 "Tài khoản email của bạn đã được sử dụng",
-        //                 [
-        //                     { text: "OK" }
-        //                 ],
-        //             );
-        //     })
-        //     .catch((err) => console.log(err));
-        dispatch(addUserEmail(userEmail));
-        navigation.navigate('SignUpBOD');
+        const checkExist = await checkExistProfileByEmail(userEmail);
+        if (!checkExist) {
+            dispatch(addUserEmail(userEmail));
+            navigation.navigate('SignUpBOD');
+        } else {
+            Alert.alert(
+                "Opps",
+                "Rất tiếc tài khoản email này đã được sử dụng, vui lòng sử dụng email khác !",
+                [
+                    { text: "OK" }
+                ],
+            );
+        }
     };
     return (
         <TouchableWithoutFeedback onPress={handleWithoutFeedback}>

@@ -1,30 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Button } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import { increment } from '../actions';
+import { ScrollView } from 'react-native-gesture-handler';
+import NotificationItem from '../components/NotificationItem';
+import StyleNotification from '../themes/StyleNotification';
+
+// import { useSelector, useDispatch } from 'react-redux';
+// import { increment } from '../actions';
 
 const Notification = (props) => {
     const { navigation } = props;
     const { route } = props;
+    // const dispatch = useDispatch();
 
-    const counter = useSelector(state => state.counter);
 
-    const handleWithoutFeedback = () => {
-        Keyboard.dismiss();
-    };
-    const handleNextSignUp = () => {
-        navigation.navigate('SignUpPhone');
-    };
-    const handleChangeAddress = (value) => {
-        setAddress(value);
-    };
-    const dispatch = useDispatch();
     return (
-        <View>
-            <Text>Haha notifications</Text>
-            <Text>{counter}</Text>
-            <Button title="+" onPress={() => dispatch(increment())}></Button>
-            <Button title="-"></Button>
+        <View style={StyleNotification.containerScreen}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+            >
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+                <NotificationItem />
+            </ScrollView>
         </View>
     )
 };

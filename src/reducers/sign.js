@@ -8,6 +8,10 @@ const initialState = {
     userGender: null,
     userAddress: '',
     userPhone: '',
+    typeprofileID: null,
+    userIDGoogle: '',
+    userTicketGoogle: '',
+    userAvatar: '',
 }
 
 
@@ -56,6 +60,26 @@ const signReducer = (state = initialState, action) => {
         case 'ADD_USER_PHONE' : {
             const newState = {...state};
             newState.userPhone = action.payload;
+            return newState;
+        }
+        case 'ADD_USER_TYPE' : {
+            const newState = {...state};
+            newState.typeprofileID = action.payload;
+            return newState;
+        }
+        case 'ADD_USER_IDGOOGLE' : {
+            const newState = {...state};
+            newState.userIDGoogle = action.payload;
+            return newState;
+        }
+        case 'ADD_USER_TICKETGOOGLE' : {
+            const newState = {...state};
+            newState.userTicketGoogle = action.payload;
+            return newState;
+        }
+        case 'ADD_USER_AVATAR' : {
+            const newState = {...state};
+            newState.userAvatar = action.payload;
             return newState;
         }
         default : return state

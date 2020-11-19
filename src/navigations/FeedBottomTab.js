@@ -64,6 +64,6 @@ const FeedBottomTab = ({ navigation, route }) => {
     );
 }
 FeedBottomTab.navigationOptions = {
-
+    headerLeft: null
 }
 export default FeedBottomTab;

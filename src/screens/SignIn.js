@@ -1,29 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ImageBackground,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Alert
-} from 'react-native';
-// import AsyncStorage from '@react-native-community/async-storage';
-import StyleSignIn from '../themes/StyleSignIn';
 import {
   GoogleSignin,
   GoogleSigninButton,
-  statusCodes,
+  statusCodes
 } from '@react-native-community/google-signin';
-
-
+import React, { useEffect, useState } from 'react';
+import {
+  Alert, ImageBackground,
+  Keyboard, Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback, View
+} from 'react-native';
+import { useDispatch } from 'react-redux';
+import { addUserAvatar, addUserEmail, addUserFirstname, addUserIDGoogle, addUserLastname, addUserSignin, addUserTicketGoogle, addUserType } from '../actions';
+import { signIn } from '../api/Sign';
+// import AsyncStorage from '@react-native-community/async-storage';
+import StyleSignIn from '../themes/StyleSignIn';
 const SignIn = (props) => {
   const { navigation } = props;
   const { route } = props
   const [userInfo, setUserInfo] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     configureGoogleSign();
   }, []);
@@ -35,9 +33,9 @@ const SignIn = (props) => {
       offlineAccess: true,
     });
   }
-  const temp = 'http://192.168.1.16:3000/auth/signinwithgoogle';
-  const checkGoogleUser = async (user) => {
-    fetch(temp, {
+
+  const checkGoogleUser = (user) => {
+    return fetch('http://192.168.43.212:3000/auth/signinwithgoogle', {
       method: 'POST',
       cache: 'no-cache',
       headers: {
@@ -50,26 +48,29 @@ const SignIn = (props) => {
     })
       .then((response) => response.json())
       .then((dataResponse) => {
-        if (!dataResponse.existProfile) {
-          navigation.navigate('SignUpStack', { screen: 'SignUpUsername' });
-        }
+        return dataResponse;
       })
   }
   const signInWithGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userGoogle = await GoogleSignin.signIn();
-      const user = await checkGoogleUser(userGoogle);
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
+      const dataResponse = await checkGoogleUser(userGoogle);
+      if(!dataResponse.existProfile){
+        dispatch(addUserTicketGoogle(dataResponse.ticket));
+        dispatch(addUserSignin(userGoogle.user.email));
+        dispatch(addUserEmail(userGoogle.user.email));
+        dispatch(addUserType(2));
+        dispatch(addUserFirstname(userGoogle.user.givenName));
+        dispatch(addUserLastname(userGoogle.user.familyName));
+        dispatch(addUserIDGoogle(userGoogle.user.id));
+        dispatch(addUserAvatar(userGoogle.user.photo));
+        navigation.navigate('SignUpStack', { screen: 'SignUpUserSignin' });
       }
+      if(dataResponse.idToken){
+        navigation.navigate('FeedBottomTab', {screen: 'NewFeed'});
+      }
+    } catch (error) {
       console.log(error);
     }
   };
@@ -119,52 +120,39 @@ const SignIn = (props) => {
     }
   };
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [userSignin, setUserSignin] = useState('');
+  const [userPassword, setUserPassword] = useState('');
   const handleEmailOnChange = (value) => {
-    setEmail(value);
+    setUserSignin(value);
   };
   const handlePasswordOnChange = (value) => {
-    setPassword(value);
+    setUserPassword(value);
   };
   const handleTouchOutside = () => {
     Keyboard.dismiss();
   }
   const handleCreateAccount = () => {
+    dispatch(addUserType(1));
     navigation.navigate('SignUpStack', { screen: 'SignUpUserSignin' });
   }
   const handleFogotPassword = () => {
     signOut();
   }
-  const handleSignIn = () => {
-    fetch('http://192.168.43.212:3000/auth/signin', {
-      method: 'POST',
-      cache: 'no-cache',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json; charset = utf-8'
-      },
-      body: JSON.stringify({
-        userSignin: email,
-        userPassword: password
-      })
-    })
-      .then((response) => response.json())
-      .then((dataResponse) => {
-        if (dataResponse.tokenID) {
-          navigation.navigate('NewFeed');
-        }
-        else {
-          Alert.alert(
-            "Opps",
-            dataResponse.message,
-            [
-              { text: "OK" }
-            ],
-          );
-        }
-      })
-      .catch((err) => console.log(err));
+  const handleSignIn = async () => {
+    const dataResponse = await signIn({userSignin, userPassword});
+    if (dataResponse.tokenID) {
+      console.log(dataResponse.tokenID);
+      navigation.navigate('FeedBottomTab', { screen: 'NewFeed' });
+    }
+    else {
+      Alert.alert(
+        "Opps",
+        dataResponse.message,
+        [
+          { text: "OK" }
+        ],
+      );
+    }
   }
   return (
     <ImageBackground style={StyleSignIn.imageBackground} source={{ uri: 'https://i.pinimg.com/originals/55/49/e2/5549e212ed1f9944512d2f599278ded0.png' }}>
@@ -176,21 +164,35 @@ const SignIn = (props) => {
             placeholder={'Username'}
             placeholderTextColor={'#fbfbfb'}
             onChangeText={(value) => handleEmailOnChange(value)}
-            value={email}
+            value={userSignin}
           />
           <TextInput
             style={[StyleSignIn.inputSignIn, StyleSignIn.fontSemiBold]}
             placeholder={'Password'}
             placeholderTextColor={'#fbfbfb'}
             onChangeText={(value) => handlePasswordOnChange(value)}
-            value={password}
+            value={userPassword}
             secureTextEntry={true}
           />
-          <TouchableOpacity
-            onPress={handleSignIn}
-            style={StyleSignIn.buttonSignIn}>
-            <Text style={[StyleSignIn.fontBold, StyleSignIn.buttonTextSignIn]}>Sign In</Text>
-          </TouchableOpacity>
+          {
+            userSignin && userPassword && (
+              <TouchableOpacity
+                onPress={handleSignIn}
+                style={StyleSignIn.buttonSignIn}
+                disabled={false}
+              >
+                <Text style={[StyleSignIn.fontBold, StyleSignIn.buttonTextSignIn]}>Sign In</Text>
+              </TouchableOpacity>
+            ) || (
+              <TouchableOpacity
+                onPress={handleSignIn}
+                style={StyleSignIn.buttonSignIn}
+                disabled={true}
+              >
+                <Text style={[StyleSignIn.fontBold, StyleSignIn.buttonTextSignIn]}>Sign In</Text>
+              </TouchableOpacity>)
+          }
+
           <GoogleSigninButton
             style={StyleSignIn.googleSigninButton}
             size={GoogleSigninButton.Size.Wide}

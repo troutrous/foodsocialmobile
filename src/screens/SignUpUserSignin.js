@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
 import StyleSignUpName from '../themes/StyleSignUpName';
-import { addUserSignin } from '../actions';
+import { addUserSignin, addUserType } from '../actions';
 
 const SignUpUserSignin = (props) => {
   const { navigation } = props;
@@ -15,7 +15,7 @@ const SignUpUserSignin = (props) => {
     Keyboard.dismiss();
   };
   const handleNextSignUp = () => {
-    dispatch(addUserSignin(userSignin))
+    dispatch(addUserSignin(userSignin));
     navigation.navigate('SignUpPassword');
   };
   const handleChangeUsername = (value) => {

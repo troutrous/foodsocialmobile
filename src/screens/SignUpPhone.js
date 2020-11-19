@@ -4,6 +4,7 @@ import StyleSignUpName from '../themes/StyleSignUpName';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUserPhone } from '../actions';
+import { signUp } from '../api/Sign';
 
 const SignUpPhone = (props) => {
   const { navigation } = props;
@@ -24,13 +25,18 @@ const SignUpPhone = (props) => {
   const handleChangePhone = (value) => {
     setUserPhone(value);
   };
-  useEffect(() => {
-    if(isFinished){
-      console.log(signRedux);
+  const handleSignUp = async () => {
+    const dataResponse = await signUp(signRedux);
+    if(dataResponse.idToken) {
+      navigation.navigate('FeedBottomTab', {screen: 'NewFeed'});
     }
-    
+  }
+  useEffect(() => {
+    if (isFinished) {
+      handleSignUp();
+    }
   }, [signRedux]);
-  
+
   return (
     <TouchableWithoutFeedback onPress={handleWithoutFeedback}>
       <View style={StyleSignUpName.viewContainer}>

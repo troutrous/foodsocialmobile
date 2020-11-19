@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import DatePicker from 'react-native-date-picker'
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +22,9 @@ const SignUpBOD = (props) => {
   const handleWithoutFeedback = () => {
     Keyboard.dismiss();
   };
+  useEffect(() => {
+    Keyboard.dismiss();
+  }, []);
   return (
     <TouchableWithoutFeedback onPress={handleWithoutFeedback}>
       <View style={StyleSignUpName.viewContainer}>
@@ -35,12 +38,12 @@ const SignUpBOD = (props) => {
           maximumDate={new Date()}
         />
         {
-          ((Math.abs(userBOD - new Date())) / (1000 * 60 * 60 * 24) >= 365 * 12) 
+          ((Math.abs(userBOD - new Date())) / (1000 * 60 * 60 * 24) >= 365 * 12)
           && (
             <TouchableOpacity style={StyleSignUpName.buttonNext} onPress={handleNextSignUp}>
               <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.textButtonNext]}>Next</Text>
-            </TouchableOpacity>) 
-            || (
+            </TouchableOpacity>)
+          || (
             <TouchableOpacity style={[StyleSignUpName.buttonNext, StyleSignUpName.buttonNextDisabled]} disabled={true}>
               <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.textButtonNext]}>Next</Text>
             </TouchableOpacity>

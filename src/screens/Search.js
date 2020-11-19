@@ -1,30 +1,81 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Button } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import { increment } from '../actions';
+import { View, Image, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity, ScrollView } from 'react-native';
+import StyleSearch from '../themes/StyleSearch';
+// import { useSelector, useDispatch } from 'react-redux';
 
 const Search = (props) => {
     const { navigation } = props;
     const { route } = props;
-
-    const counter = useSelector(state => state.counter);
-
-    const handleWithoutFeedback = () => {
-        Keyboard.dismiss();
-    };
-    const handleNextSignUp = () => {
-        navigation.navigate('SignUpPhone');
-    };
-    const handleChangeAddress = (value) => {
-        setAddress(value);
-    };
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     return (
-        <View>
-            <Text>Haha Search</Text>
-            <Text>{counter}</Text>
-            <Button title="+" onPress={() => dispatch(increment())}></Button>
-            <Button title="-"></Button>
+        <View style={StyleSearch.containerScreen}>
+            <View style={StyleSearch.viewTextInput}>
+                <TextInput 
+                style={StyleSearch.textInput} 
+                placeholder={'Search'}
+                keyboardType={'web-search'}
+                returnKeyType={'search'}
+                />
+            </View>
+            <View style={StyleSearch.viewSearchContent}>
+                <ScrollView>
+                    <View style={StyleSearch.viewContent}>
+                        <View style={StyleSearch.contentItemType1}>
+                            <Image
+                                style={StyleSearch.imageItemType1}
+                                source={{ uri: 'https://www.skinnytaste.com/wp-content/uploads/2012/09/Mushroom-Stroganoff-3.jpg' }}
+                            />
+                            <Image
+                                style={StyleSearch.imageItemType4}
+                                source={{ uri: 'https://www.skinnytaste.com/wp-content/uploads/2012/09/Mushroom-Stroganoff-3.jpg' }}
+                            />
+                        </View>
+                        <View style={StyleSearch.contentItemType2}>
+                            <Image
+                                style={StyleSearch.imageItemType2}
+                                source={{ uri: 'https://www.skinnytaste.com/wp-content/uploads/2012/09/Mushroom-Stroganoff-3.jpg' }}
+                            />
+                            <Image
+                                style={StyleSearch.imageItemType2}
+                                source={{ uri: 'https://www.skinnytaste.com/wp-content/uploads/2012/09/Mushroom-Stroganoff-3.jpg' }}
+                            />
+                        </View>
+                        <View style={StyleSearch.contentItemType3}>
+                            <Image
+                                style={StyleSearch.imageItemType3}
+                                source={{ uri: 'https://www.skinnytaste.com/wp-content/uploads/2012/09/Mushroom-Stroganoff-3.jpg' }}
+                            />
+                        </View>
+                        <View style={StyleSearch.contentItemType2}>
+                            <Image
+                                style={StyleSearch.imageItemType2}
+                                source={{ uri: 'https://www.skinnytaste.com/wp-content/uploads/2012/09/Mushroom-Stroganoff-3.jpg' }}
+                            />
+                            <Image
+                                style={StyleSearch.imageItemType2}
+                                source={{ uri: 'https://www.skinnytaste.com/wp-content/uploads/2012/09/Mushroom-Stroganoff-3.jpg' }}
+                            />
+                        </View>
+                        <View style={StyleSearch.contentItemType1}>
+                            <Image
+                                style={StyleSearch.imageItemType1}
+                                source={{ uri: 'https://www.skinnytaste.com/wp-content/uploads/2012/09/Mushroom-Stroganoff-3.jpg' }}
+                            />
+                            <Image
+                                style={StyleSearch.imageItemType4}
+                                source={{ uri: 'https://www.skinnytaste.com/wp-content/uploads/2012/09/Mushroom-Stroganoff-3.jpg' }}
+                            />
+                        </View>
+                        
+                        <View style={StyleSearch.contentItemType3}>
+                            <Image
+                                style={StyleSearch.imageItemType3}
+                                source={{ uri: 'https://www.skinnytaste.com/wp-content/uploads/2012/09/Mushroom-Stroganoff-3.jpg' }}
+                            />
+                        </View>
+                    </View>
+                </ScrollView>
+            </View>
         </View>
     )
 };

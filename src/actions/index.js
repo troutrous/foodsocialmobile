@@ -65,3 +65,27 @@ export const addUserPhone = (userPhone) => {
         payload: userPhone,
     }
 }
+export const addUserType = (userType) => {
+    return {
+        type: 'ADD_USER_TYPE',
+        payload: userType,
+    }
+}
+export const addUserIDGoogle = (userIDGoogle) => {
+    return {
+        type: 'ADD_USER_IDGOOGLE',
+        payload: userIDGoogle,
+    }
+}
+export const addUserTicketGoogle = (userTicketGoogle) => {
+    return {
+        type: 'ADD_USER_TICKETGOOGLE',
+        payload: userTicketGoogle,
+    }
+}
+export const addUserAvatar = (userAvatar) => {
+    return {
+        type: 'ADD_USER_AVATAR',
+        payload: userAvatar,
+    }
+}
