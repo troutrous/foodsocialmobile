@@ -12,7 +12,8 @@ const StyleSignIn = StyleSheet.create({
     resizeMode: "cover",
     justifyContent: "center",
     height: '100%',
-    width: '100%'
+    width: '100%',
+    backgroundColor: '#000000',
   },
   viewContainer: {
     padding: 20,
