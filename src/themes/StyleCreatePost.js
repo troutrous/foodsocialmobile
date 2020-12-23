@@ -65,5 +65,24 @@ export default StyleCreatePost = StyleSheet.create({
         width: widthWindow,
         height: widthWindow,
         resizeMode: 'cover',
-    }
+    },
+    inputViewContent: {
+        flex: 1,
+    },
+    inputContent: {
+        flex: 1,
+        padding: 10,
+        textAlignVertical: 'top',
+        fontFamily: 'NunitoSans-Regular',
+        fontSize: 18,
+    },
+    imageViewContent: {
+        flex: 1,
+        width: widthWindow,
+        maxHeight: widthWindow,
+    },
+    imageContent: {
+        resizeMode: 'cover',
+        flex: 1,
+    },
 })

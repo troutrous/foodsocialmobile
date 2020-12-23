@@ -9,16 +9,20 @@ const StyleNewFeed = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'space-between'
+    },
+    containerHeaderNewFeedLeft: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        alignItems: 'center'
     },
     textHeaderNewFeed: {
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'left',
-
+        marginLeft: 10,
         color: '#03a9f4',
-        fontSize: 26,
+        fontSize: 22,
         fontWeight: '500',
         fontFamily: 'NunitoSans-ExtraBold',
     },
