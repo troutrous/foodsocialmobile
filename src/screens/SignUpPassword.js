@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Alert, Keyboard, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserPassword } from '../actions';
+import { addSignupPassword } from '../actions';
 import StyleSignUpName from '../themes/StyleSignUpName';
 
 const SignUpPassword = (props) => {
     const { navigation } = props;
     const { route } = props;
     const dispatch = useDispatch();
-    const userPasswordRedux = useSelector(state => state.sign.userPassword);
+    const userPasswordRedux = useSelector(state => state.sign.signupPassword);
     const [userPassword, setUserPassword] = useState(userPasswordRedux);
     const [enterpassword, setEnterassword] = useState('');
 
@@ -17,7 +17,7 @@ const SignUpPassword = (props) => {
     };
     const handleNextSignUp = () => {
         if (userPassword === enterpassword) {
-            dispatch(addUserPassword(userPassword))
+            dispatch(addSignupPassword(userPassword))
             navigation.navigate('SignUpName');
             return;
         }

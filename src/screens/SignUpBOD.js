@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import DatePicker from 'react-native-date-picker'
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserBOD } from '../actions';
+import { addSignupBOD } from '../actions';
 
 import StyleSignUpName from '../themes/StyleSignUpName';
 
@@ -10,13 +10,13 @@ const SignUpBOD = (props) => {
   const { navigation } = props;
   const { route } = props;
   const dispatch = useDispatch();
-  const userBODRedux = useSelector(state => state.sign.userBOD);
+  const userBODRedux = useSelector(state => state.sign.signupBOD);
   const [userBOD, setUserBOD] = useState(new Date(userBODRedux));
   const handleOnDateChange = (value) => {
     setUserBOD(value);
   }
   const handleNextSignUp = () => {
-    dispatch(addUserBOD(userBOD.toJSON().slice(0, 10)));
+    dispatch(addSignupBOD(userBOD.toJSON().slice(0, 10)));
     navigation.navigate('SignUpGender');
   };
   const handleWithoutFeedback = () => {

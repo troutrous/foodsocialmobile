@@ -4,88 +4,196 @@ export const increment = () => {
     }
 }
 
-export const addUserSignin = (userSignin) => {
+export const addSignupSignin = (userSignin) => {
     return {
-        type: 'ADD_USER_SIGNIN',
+        type: 'ADD_SIGNUP_SIGNIN',
         payload: userSignin,
     }
 }
 
-export const addUserPassword = (userPassword) => {
+export const addSignupPassword = (userPassword) => {
     return {
-        type: 'ADD_USER_PASSWORD',
+        type: 'ADD_SIGNUP_PASSWORD',
         payload: userPassword,
     }
 }
 
-export const addUserFirstname = (userFirstname) => {
+export const addSignupFirstname = (userFirstname) => {
     return {
-        type: 'ADD_USER_FIRSTNAME',
+        type: 'ADD_SIGNUP_FIRSTNAME',
         payload: userFirstname,
     }
 }
 
-export const addUserLastname = (userLastname) => {
+export const addSignupLastname = (userLastname) => {
     return {
-        type: 'ADD_USER_LASTNAME',
+        type: 'ADD_SIGNUP_LASTNAME',
         payload: userLastname,
     }
 }
 
-export const addUserEmail = (userEmail) => {
+export const addSignupEmail = (userEmail) => {
     return {
-        type: 'ADD_USER_EMAIL',
+        type: 'ADD_SIGNUP_EMAIL',
         payload: userEmail,
     }
 }
 
-export const addUserBOD = (userBOD) => {
+export const addSignupBOD = (userBOD) => {
     return {
-        type: 'ADD_USER_BOD',
+        type: 'ADD_SIGNUP_BOD',
         payload: userBOD,
     }
 }
 
-export const addUserGender = (userGender) => {
+export const addSignupGender = (userGender) => {
     return {
-        type: 'ADD_USER_GENDER',
+        type: 'ADD_SIGNUP_GENDER',
         payload: userGender,
     }
 }
 
-export const addUserAddress = (userAddress) => {
+export const addSignupAddress = (userAddress) => {
     return {
-        type: 'ADD_USER_ADDRESS',
+        type: 'ADD_SIGNUP_ADDRESS',
         payload: userAddress,
     }
 }
-export const addUserPhone = (userPhone) => {
+export const addSignupPhone = (userPhone) => {
     return {
-        type: 'ADD_USER_PHONE',
+        type: 'ADD_SIGNUP_PHONE',
         payload: userPhone,
     }
 }
-export const addUserType = (userType) => {
+export const addSignupType = (userType) => {
     return {
-        type: 'ADD_USER_TYPE',
+        type: 'ADD_SIGNUP_TYPE',
         payload: userType,
     }
 }
-export const addUserIDGoogle = (userIDGoogle) => {
+export const addSignupIDGoogle = (userIDGoogle) => {
     return {
-        type: 'ADD_USER_IDGOOGLE',
+        type: 'ADD_SIGNUP_IDGOOGLE',
         payload: userIDGoogle,
     }
 }
-export const addUserTicketGoogle = (userTicketGoogle) => {
+export const addSignupTicketGoogle = (userTicketGoogle) => {
     return {
-        type: 'ADD_USER_TICKETGOOGLE',
+        type: 'ADD_SIGNUP_TICKETGOOGLE',
         payload: userTicketGoogle,
     }
 }
-export const addUserAvatar = (userAvatar) => {
+export const addSignupAvatar = (userAvatar) => {
     return {
-        type: 'ADD_USER_AVATAR',
+        type: 'ADD_SIGNUP_AVATAR',
         payload: userAvatar,
+    }
+}
+
+//token
+export const addToken = (token) => {
+    return {
+        type: 'ADD_TOKEN',
+        payload: token,
+    }
+}
+
+//profile
+export const addProfileID = (profileID) => {
+    return {
+        type: 'ADD_PROFILE_ID',
+        payload: profileID,
+    }
+}
+export const addProfileFirstname = (profileFirstname) => {
+    return {
+        type: 'ADD_PROFILE_FIRSTNAME',
+        payload: profileFirstname,
+    }
+}
+export const addProfileLastname = (profileLastname) => {
+    return {
+        type: 'ADD_PROFILE_LASTNAME',
+        payload: profileLastname,
+    }
+}
+export const addProfileEmail = (profileEmail) => {
+    return {
+        type: 'ADD_PROFILE_EMAIL',
+        payload: profileEmail,
+    }
+}
+export const addProfileBOD = (profileBOD) => {
+    return {
+        type: 'ADD_PROFILE_BOD',
+        payload: profileBOD,
+    }
+}
+export const addProfileGender = (profileGender) => {
+    return {
+        type: 'ADD_PROFILE_GENDER',
+        payload: profileGender,
+    }
+}
+export const addProfileAddress = (profileAddress) => {
+    return {
+        type: 'ADD_PROFILE_ADDRESS',
+        payload: profileAddress,
+    }
+}
+export const addProfilePhone = (profilePhone) => {
+    return {
+        type: 'ADD_PROFILE_PHONE',
+        payload: profilePhone,
+    }
+}
+export const addProfileType = (profileType) => {
+    return {
+        type: 'ADD_PROFILE_TYPE',
+        payload: profileType,
+    }
+}
+export const addProfileAvatar = (profileAvatar) => {
+    return {
+        type: 'ADD_PROFILE_AVATAR',
+        payload: profileAvatar,
+    }
+}
+export const addProfileFollowingCount = (profileFollowingCount) => {
+    return {
+        type: 'ADD_PROFILE_FOLLOWINGCOUNT',
+        payload: profileFollowingCount,
+    }
+}
+export const addProfileFollowerCount = (profileFollowerCount) => {
+    return {
+        type: 'ADD_PROFILE_FOLLOWERCOUNT',
+        payload: profileFollowerCount,
+    }
+}
+export const addProfilePostCount = (profilePostCount) => {
+    return {
+        type: 'ADD_PROFILE_POSTCOUNT',
+        payload: profilePostCount,
+    }
+}
+export const addProfile = (profile) => {
+    return {
+        type: 'ADD_PROFILE',
+        payload: {
+            profileID : profile.userID,
+            profileFirstname : profile.userFirstname,
+            profileLastname : profile.userLastname,
+            profileGender : profile.userGender,
+            profileBOD : profile.userBOD,
+            profileEmail : profile.userEmail,
+            profilePhone : profile.userPhone,
+            profileAddress : profile.userAddress,
+            profilePostCount : profile.postCount,
+            profileFollowerCount : profile.followerCount,
+            profileFollowingCount : profile.followingCount,
+            profileType : profile.typeprofileID,
+            profileAvatar : profile.userAvatar,
+        },
     }
 }

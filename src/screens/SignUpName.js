@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserFirstname, addUserLastname } from '../actions';
+import { addSignupFirstname, addSignupLastname } from '../actions';
 import StyleSignUpName from '../themes/StyleSignUpName';
 
 const SignUpName = (props) => {
   const { navigation } = props;
   const { route } = props;
   const dispatch = useDispatch();
-  const userFirstnameRedux = useSelector(state => state.sign.userFirstname);
-  const userLastnameRedux = useSelector(state => state.sign.userLastname);
+  const userFirstnameRedux = useSelector(state => state.sign.signupFirstname);
+  const userLastnameRedux = useSelector(state => state.sign.signupLastname);
   const [userFistname, setUserFistname] = useState(userFirstnameRedux);
   const [userLastname, setUserLastname] = useState(userLastnameRedux);
 
@@ -17,8 +17,8 @@ const SignUpName = (props) => {
     Keyboard.dismiss();
   };
   const handleNextSignUp = () => {
-    dispatch(addUserFirstname(userFistname));
-    dispatch(addUserLastname(userLastname));
+    dispatch(addSignupFirstname(userFistname));
+    dispatch(addSignupLastname(userLastname));
     navigation.navigate('SignUpEmail');
   };
   const handleChangeFirstName = (value) => {

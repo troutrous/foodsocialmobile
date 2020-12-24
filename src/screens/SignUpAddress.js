@@ -3,20 +3,20 @@ import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpa
 import StyleSignUpName from '../themes/StyleSignUpName';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserAddress } from '../actions';
+import { addSignupAddress } from '../actions';
 
 const SignUpAddress = (props) => {
   const { navigation } = props;
   const { route } = props;
   const dispatch = useDispatch();
-  const userAddressRedux = useSelector(state => state.sign.userAddress);
+  const userAddressRedux = useSelector(state => state.sign.signupAddress);
   const [userAddress, setUserAddress] = useState(userAddressRedux);
 
   const handleWithoutFeedback = () => {
     Keyboard.dismiss();
   };
   const handleNextSignUp = () => {
-    dispatch(addUserAddress(userAddress));
+    dispatch(addSignupAddress(userAddress));
     navigation.navigate('SignUpPhone');
   };
   const handleChangeAddress = (value) => {

@@ -3,20 +3,20 @@ import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpa
 import StyleSignUpName from '../themes/StyleSignUpName';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserGender } from '../actions';
+import { addSignupGender } from '../actions';
 
 const SignUpGender = (props) => {
     const { navigation } = props;
     const { route } = props;
     const dispatch = useDispatch();
-    const userGenderRedux = useSelector(state => state.sign.userGender);
+    const userGenderRedux = useSelector(state => state.sign.signupGender);
     const [userGender, setUserGender] = useState(userGenderRedux);
 
     const handleWithoutFeedback = () => {
         Keyboard.dismiss();
     };
     const handleNextSignUp = () => {
-        dispatch(addUserGender(userGender));
+        dispatch(addSignupGender(userGender));
         navigation.navigate('SignUpAddress');
     };
     const handleOptionMale = () => {

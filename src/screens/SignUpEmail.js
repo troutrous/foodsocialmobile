@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert } from 'react-native';
 import StyleSignUpName from '../themes/StyleSignUpName';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserEmail } from '../actions';
+import { addSignupEmail } from '../actions';
 import { checkExistProfileByEmail } from '../api/Sign';
 
 const SignUpEmail = (props) => {
     const { navigation } = props;
     const { route } = props;
     const dispatch = useDispatch();
-    const userEmailRedux = useSelector(state => state.sign.userEmail);
+    const userEmailRedux = useSelector(state => state.sign.signupEmail);
     const [userEmail, setUserEmail] = useState(userEmailRedux);
+
+    useEffect(() => {
+        console.log(userEmailRedux);
+    },[])
 
     const handleWithoutFeedback = () => {
         Keyboard.dismiss();
@@ -21,7 +25,7 @@ const SignUpEmail = (props) => {
     const handleNextSignUp = async () => {
         const checkExist = await checkExistProfileByEmail(userEmail);
         if (!checkExist) {
-            dispatch(addUserEmail(userEmail));
+            dispatch(addSignupEmail(userEmail));
             navigation.navigate('SignUpBOD');
         } else {
             Alert.alert(

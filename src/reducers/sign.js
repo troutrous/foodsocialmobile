@@ -1,85 +1,85 @@
 const initialState = {
-    userSignin: '',
-    userPassword: '',
-    userFirstname: '',
-    userLastname: '',
-    userEmail: '',
-    userBOD: new Date().toJSON().slice(0, 10),
-    userGender: null,
-    userAddress: '',
-    userPhone: '',
-    typeprofileID: null,
-    userIDGoogle: '',
-    userTicketGoogle: '',
-    userAvatar: '',
+    signupSignin: '',
+    signupPassword: '',
+    signupFirstname: '',
+    signupLastname: '',
+    signupEmail: '',
+    signupBOD: new Date().toJSON().slice(0, 10),
+    signupGender: null,
+    signupAddress: '',
+    signupPhone: '',
+    signupIDGoogle: '',
+    signupTicketGoogle: '',
+    signupAvatar: '',
+    signupTypeProfile: null,
 }
 
 
 const signReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'ADD_USER_SIGNIN' : {
+        case 'ADD_SIGNUP_SIGNIN' : {
             const newState = {...state};
-            newState.userSignin = action.payload;
+            newState.signupSignin = action.payload;
             return newState;
         }
-        case 'ADD_USER_PASSWORD' : {
+        case 'ADD_SIGNUP_PASSWORD' : {
             const newState = {...state};
-            newState.userPassword = action.payload;
+            newState.signupPassword = action.payload;
             return newState;
         }
-        case 'ADD_USER_FIRSTNAME' : {
+        case 'ADD_SIGNUP_FIRSTNAME' : {
             const newState = {...state};
-            newState.userFirstname = action.payload;
+            newState.signupFirstname = action.payload;
             return newState;
         }
-        case 'ADD_USER_LASTNAME' : {
+        case 'ADD_SIGNUP_LASTNAME' : {
             const newState = {...state};
-            newState.userLastname = action.payload;
+            newState.signupLastname = action.payload;
             return newState;
         }
-        case 'ADD_USER_EMAIL' : {
+        case 'ADD_SIGNUP_EMAIL' : {
             const newState = {...state};
-            newState.userEmail = action.payload;
+            newState.signupEmail = action.payload;
             return newState;
         }
-        case 'ADD_USER_BOD' : {
+        case 'ADD_SIGNUP_BOD' : {
             const newState = {...state};
-            newState.userBOD = action.payload;
+            newState.signupBOD = action.payload;
             return newState;
         }
-        case 'ADD_USER_GENDER' : {
+        case 'ADD_SIGNUP_GENDER' : {
             const newState = {...state};
-            newState.userGender = action.payload;
+            newState.signupGender = action.payload;
             return newState;
         }
-        case 'ADD_USER_ADDRESS' : {
+        case 'ADD_SIGNUP_ADDRESS' : {
             const newState = {...state};
-            newState.userAddress = action.payload;
+            newState.signupAddress = action.payload;
             return newState;
         }
-        case 'ADD_USER_PHONE' : {
+        case 'ADD_SIGNUP_PHONE' : {
             const newState = {...state};
-            newState.userPhone = action.payload;
+            newState.signupPhone = action.payload;
             return newState;
         }
-        case 'ADD_USER_TYPE' : {
+        case 'ADD_SIGNUP_TYPE' : {
             const newState = {...state};
-            newState.typeprofileID = action.payload;
+            newState.signupTypeProfile = action.payload;
             return newState;
         }
-        case 'ADD_USER_IDGOOGLE' : {
+        case 'ADD_SIGNUP_IDGOOGLE' : {
             const newState = {...state};
-            newState.userIDGoogle = action.payload;
+            newState.signupIDGoogle = action.payload;
             return newState;
         }
-        case 'ADD_USER_TICKETGOOGLE' : {
+        case 'ADD_SIGNUP_TICKETGOOGLE' : {
             const newState = {...state};
-            newState.userTicketGoogle = action.payload;
+            newState.signupTicketGoogle = action.payload;
             return newState;
         }
-        case 'ADD_USER_AVATAR' : {
+        case 'ADD_SIGNUP_AVATAR' : {
             const newState = {...state};
-            newState.userAvatar = action.payload;
+            newState.signupAvatar = action.payload;
             return newState;
         }
         default : return state

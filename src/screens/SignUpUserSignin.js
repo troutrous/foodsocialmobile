@@ -2,20 +2,20 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
 import StyleSignUpName from '../themes/StyleSignUpName';
-import { addUserSignin, addUserType } from '../actions';
+import { addSignupSignin } from '../actions';
 
 const SignUpUserSignin = (props) => {
   const { navigation } = props;
   const { route } = props;
   const dispatch = useDispatch();
-  const userSigninRedux = useSelector(state => state.sign.userSignin);
+  const userSigninRedux = useSelector(state => state.sign.signupSignin);
   const [userSignin, setUserSignin] = useState(userSigninRedux);
 
   const handleWithoutFeedback = () => {
     Keyboard.dismiss();
   };
   const handleNextSignUp = () => {
-    dispatch(addUserSignin(userSignin));
+    dispatch(addSignupSignin(userSignin));
     navigation.navigate('SignUpPassword');
   };
   const handleChangeUsername = (value) => {

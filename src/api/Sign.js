@@ -1,5 +1,4 @@
-
-const URL_BASE = 'http://192.168.43.212:3000';
+const URL_BASE = 'http://192.168.1.15:3000';
 
 
 export const checkExistProfileByEmail = (userEmail) => {
@@ -33,11 +32,24 @@ export const signUp = (signUpData) => {
             ...signUpData
         })
     })
-        .then((response) => response.json())
-        .then((dataResponse) => {
-            return dataResponse;
+        .then(response => {
+            const statusCode = response.status;
+            const data = response.json();
+            const token = response.headers.get('Authorization');
+            return Promise.all([statusCode, data, token])
         })
-        .catch((err) => console.log(err));
+        .then(([statusCode, dataResponse, token]) => {
+            if (statusCode === 200 && token) {
+                return { successSignup: true, ...dataResponse, token: token};
+            }
+            else {
+                return { successSignup: false };
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            return null;
+        });
 }
 
 export const signIn = (signInData) => {
@@ -52,10 +64,55 @@ export const signIn = (signInData) => {
             ...signInData
         })
     })
-        .then((response) => response.json())
-        .then((dataResponse) => {
-            return dataResponse;
+        .then(response => {
+            const statusCode = response.status;
+            const data = response.json();
+            const token = response.headers.get('Authorization');
+            return Promise.all([statusCode, data, token])
         })
-        .catch((err) => console.log(err));
+        .then(([statusCode, dataResponse, token]) => {
+            if (statusCode === 200 && token) {
+                return { successSignin: true, ...dataResponse, token: token };
+            }
+            else {
+                return { successSignin: false };
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            return null;
+        });
+}
+
+export const signInWithGoogle = (user) => {
+    return fetch(URL_BASE + '/auth/signinwithgoogle', {
+        method: 'POST',
+        cache: 'no-cache',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json; charset = utf-8'
+        },
+        body: JSON.stringify({
+            ...user
+        })
+    })
+        .then(response => {
+            const statusCode = response.status;
+            const data = response.json();
+            const token = response.headers.get('Authorization');
+            return Promise.all([statusCode, data, token])
+        })
+        .then(([statusCode, dataResponse, token]) => {
+            if (statusCode === 200 && token) {
+                return { successSignin: true, ...dataResponse, token };
+            }
+            else {
+                return { successSignin: false };
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            return null;
+        });
 }
 

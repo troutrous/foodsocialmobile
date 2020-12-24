@@ -12,8 +12,11 @@ import {
   TouchableWithoutFeedback, View
 } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { addUserAvatar, addUserEmail, addUserFirstname, addUserIDGoogle, addUserLastname, addUserSignin, addUserTicketGoogle, addUserType } from '../actions';
-import { signIn } from '../api/Sign';
+import {
+  addSignupAvatar, addSignupEmail, addSignupFirstname, addSignupIDGoogle, addSignupLastname, addSignupSignin, addSignupType,
+  addProfileID, addProfile, addToken
+} from '../actions';
+import { signIn, signInWithGoogle } from '../api/Sign';
 // import AsyncStorage from '@react-native-community/async-storage';
 import StyleSignIn from '../themes/StyleSignIn';
 const SignIn = (props) => {
@@ -34,52 +37,41 @@ const SignIn = (props) => {
     });
   }
 
-  const checkGoogleUser = (user) => {
-    return fetch('http://192.168.43.212:3000/auth/signinwithgoogle', {
-      method: 'POST',
-      cache: 'no-cache',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json; charset = utf-8'
-      },
-      body: JSON.stringify({
-        ...user
-      })
-    })
-      .then((response) => response.json())
-      .then((dataResponse) => {
-        return dataResponse;
-      })
-  }
-  const signInWithGoogle = async () => {
+
+  const handleSignInWithGoogle = async () => {
     try {
+      const currentUser = await GoogleSignin.getCurrentUser();
+      if (currentUser) {
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      }
       await GoogleSignin.hasPlayServices();
       const userGoogle = await GoogleSignin.signIn();
-      const dataResponse = await checkGoogleUser(userGoogle);
-      if(!dataResponse.existProfile){
-        dispatch(addUserTicketGoogle(dataResponse.ticket));
-        dispatch(addUserSignin(userGoogle.user.email));
-        dispatch(addUserEmail(userGoogle.user.email));
-        dispatch(addUserType(2));
-        dispatch(addUserFirstname(userGoogle.user.givenName));
-        dispatch(addUserLastname(userGoogle.user.familyName));
-        dispatch(addUserIDGoogle(userGoogle.user.id));
-        dispatch(addUserAvatar(userGoogle.user.photo));
+      const dataResponse = await signInWithGoogle(userGoogle);
+      if (dataResponse.successSignin == true) {
+        dispatch(addProfile(dataResponse));
+        dispatch(addToken(dataResponse.token));
+        navigation.navigate('FeedBottomTab', { screen: 'NewFeed' });
+      } else if (dataResponse.successSignin == false) {
+        dispatch(addSignupSignin(userGoogle.user.email));
+        dispatch(addSignupEmail(userGoogle.user.email));
+        dispatch(addSignupType(2));
+        dispatch(addSignupFirstname(userGoogle.user.givenName));
+        dispatch(addSignupLastname(userGoogle.user.familyName));
+        dispatch(addSignupIDGoogle(userGoogle.user.id));
+        dispatch(addSignupAvatar(userGoogle.user.photo));
         navigation.navigate('SignUpStack', { screen: 'SignUpUserSignin' });
       }
-      if(dataResponse.idToken){
-        navigation.navigate('FeedBottomTab', {screen: 'NewFeed'});
-      }
+
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getCurrentUserInfo = async () => {
+  const getCurrentGoogleInfo = async () => {
     try {
-      const userInfo = await GoogleSignin.signInSilently();
-      console.log(userInfo);
-      // this.setState({userInfo});
+      const currentUser = await GoogleSignin.getCurrentUser();
+      return currentUser;
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
         // user has not signed in yet
@@ -132,27 +124,25 @@ const SignIn = (props) => {
     Keyboard.dismiss();
   }
   const handleCreateAccount = () => {
-    dispatch(addUserType(1));
+    dispatch(addSignupType(1));
     navigation.navigate('SignUpStack', { screen: 'SignUpUserSignin' });
   }
   const handleFogotPassword = () => {
     signOut();
   }
   const handleSignIn = async () => {
-    const dataResponse = await signIn({userSignin, userPassword});
-    if (dataResponse.tokenID) {
-      console.log(dataResponse.tokenID);
+    const dataResponse = await signIn({ userSignin, userPassword });
+    if (dataResponse.successSignin == true) {
+      dispatch(addProfile(dataResponse));
+      dispatch(addToken(dataResponse.token));
       navigation.navigate('FeedBottomTab', { screen: 'NewFeed' });
-    }
-    else {
+    } else if (dataResponse.successSignin == false) {
       Alert.alert(
-        "Opps",
-        dataResponse.message,
-        [
-          { text: "OK" }
-        ],
+        'Thông báo',
+        'Thất bại'
       );
     }
+
   }
   return (
     <ImageBackground style={StyleSignIn.imageBackground} source={{ uri: 'https://i.pinimg.com/originals/55/49/e2/5549e212ed1f9944512d2f599278ded0.png' }}>
@@ -186,7 +176,7 @@ const SignIn = (props) => {
             ) || (
               <TouchableOpacity
                 onPress={handleSignIn}
-                style={StyleSignIn.buttonSignIn}
+                style={[StyleSignIn.buttonSignIn, StyleSignIn.buttonDisabled]}
                 disabled={true}
               >
                 <Text style={[StyleSignIn.fontBold, StyleSignIn.buttonTextSignIn]}>Sign In</Text>
@@ -198,7 +188,7 @@ const SignIn = (props) => {
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Light}
             onPress={() => {
-              signInWithGoogle();
+              handleSignInWithGoogle();
             }}
           />
           <View style={StyleSignIn.flexContainer}>

@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert } from 'react-native';
 import StyleSignUpName from '../themes/StyleSignUpName';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
-import { addUserPhone } from '../actions';
+import { addSignupPhone, addProfile, addToken } from '../actions';
 import { signUp } from '../api/Sign';
 
 const SignUpPhone = (props) => {
   const { navigation } = props;
   const { route } = props;
   const dispatch = useDispatch();
-  const userPhonesRedux = useSelector(state => state.sign.userPhone);
+  const userPhonesRedux = useSelector(state => state.sign.signupPhone);
   const signRedux = useSelector(state => state.sign);
+
   const [isFinished, setIsFinished] = useState(false);
   const [userPhone, setUserPhone] = useState(userPhonesRedux);
 
@@ -19,18 +20,37 @@ const SignUpPhone = (props) => {
     Keyboard.dismiss();
   };
   const handleNextSignUp = () => {
+    dispatch(addSignupPhone(userPhone));
     setIsFinished(true);
-    dispatch(addUserPhone(userPhone));
   };
   const handleChangePhone = (value) => {
     setUserPhone(value);
   };
   const handleSignUp = async () => {
-    const dataResponse = await signUp(signRedux);
-    if(dataResponse.idToken) {
-      navigation.navigate('FeedBottomTab', {screen: 'NewFeed'});
+    const dataResponse = await signUp({
+      userSignin: signRedux.signupSignin,
+      userPassword: signRedux.signupPassword,
+      userFirstname: signRedux.signupFirstname,
+      userLastname: signRedux.signupLastname,
+      userGender: signRedux.signupEmail,
+      userEmail: signRedux.userBOD,
+      userGender: signRedux.signupGender,
+      userAddress: signRedux.signupAddress,
+      userPhone: signRedux.signupPhone,
+      typeprofileID: signRedux.signupTypeProfile,
+    });
+    if (dataResponse.successSignup == true) {
+      dispatch(addProfile(dataResponse));
+      dispatch(addToken(dataResponse.token));
+      navigation.navigate('FeedBottomTab', { screen: 'NewFeed' });
+    } else if (ataResponse.successSignup == false) {
+      Alert.alert(
+        'Thông báo',
+        'Thất bại'
+      );
     }
   }
+
   useEffect(() => {
     if (isFinished) {
       handleSignUp();

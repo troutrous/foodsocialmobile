@@ -3,10 +3,19 @@ import { RefreshControl, ScrollView, View } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import PostNewFeedItem from '../components/PostNewFeedItem';
 import StyleNewFeed from '../themes/StyleNewFeed';
+import { useDispatch, useSelector } from 'react-redux';
+
 const NewFeed = (props) => {
+    const dispatch = useDispatch();
+    const profileRedux = useSelector(state => state.profile);
+    const tokenRedux = useSelector(state => state.token);
     const { navigation } = props;
 
 
+    useEffect(() => {
+        console.log(profileRedux);
+        console.log(tokenRedux);
+    }, []);
 
 
 
@@ -44,24 +53,5 @@ const NewFeed = (props) => {
 // NewFeed.navigationOptions = {
 //     headerTitle: () => <HeaderNewFeed />
 // };
-
-NewFeed.navigationOptions = ({ navigation }) => {
-    const { routes, index } = navigation.dangerouslyGetState();
-    const { state: exploreState } = routes[index];
-    let tabBarVisible = false;
-    // if (exploreState) {
-    //     const { routes: exploreRoutes, index: exploreIndex } = exploreState;
-    //     const exploreActiveRoute = exploreRoutes[exploreIndex];
-    //     if (exploreActiveRoute.name === "NewFeed") tabBarVisible = false;
-    // }
-    return {
-        tabBarVisible: true,
-        title: "Hihhihi",
-        tabBarLabel: "kuku",
-        tabBarIcon: ({ color, size }) => (
-            <AntDesign name="search1" color={color} size={size} />
-        ),
-    };
-}
 
 export default NewFeed;

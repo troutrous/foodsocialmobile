@@ -33,7 +33,7 @@ const StyleSignIn = StyleSheet.create({
     borderBottomWidth: 0.5,
     width: '100%',
     color: '#fff',
-    fontSize: 20,
+    fontSize: 18,
     marginBottom: 20,
     height: 45,
   },
@@ -67,6 +67,9 @@ const StyleSignIn = StyleSheet.create({
     textDecorationColor: '#fff',
     textDecorationStyle: 'solid',
     textDecorationLine: 'underline'
+  },
+  buttonDisabled: {
+    opacity: 0.9
   }
 });
 export default StyleSignIn;

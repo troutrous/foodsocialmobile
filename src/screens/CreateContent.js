@@ -6,6 +6,7 @@ import StyleCreatePost from '../themes/StyleCreatePost';
 const CreateContent = (props) => {
     const { navigation } = props;
     const { route } = props;
+    const { imageBase64 } = route.params;
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -34,9 +35,13 @@ const CreateContent = (props) => {
                     <TextInput placeholder={"Write something here..."} style={StyleCreatePost.inputContent} multiline={true}
                         underlineColorAndroid='transparent'></TextInput>
                 </View>
-                <View style={StyleCreatePost.imageViewContent}>
-                    <Image style={StyleCreatePost.imageContent} source={{ uri: `https://i.pinimg.com/originals/af/8d/63/af8d63a477078732b79ff9d9fc60873f.jpg` }} />
-                </View>
+                {
+                    imageBase64 && (
+                        <View style={StyleCreatePost.imageViewContent}>
+                            <Image style={StyleCreatePost.imageContent} source={{ uri: `data:image/png;base64,${imageBase64}` }} />
+                        </View>
+                    )
+                }
             </View>
         </TouchableWithoutFeedback>
     );
