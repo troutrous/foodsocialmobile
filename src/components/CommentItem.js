@@ -1,40 +1,100 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import StyleComment from '../themes/StyleComment';
-import MaterialCommunityIcons from '../../node_modules/react-native-vector-icons/MaterialCommunityIcons';
+
+function timeSince(date) {
+
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    var interval = seconds / 31536000;
+
+    if (interval > 1) {
+        return Math.floor(interval) + " years ago";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+        return Math.floor(interval) + " months ago";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+        return Math.floor(interval) + "d";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+        return Math.floor(interval) + "h";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+        return Math.floor(interval) + "m";
+    }
+    return "Just now";
+}
 
 export default CommentItem = (props) => {
-    const {handleCommentRequest} = props;
+    const { handleCommentRequest } = props;
+    const { comment } = props;
     return (
         <View style={StyleComment.containerCommentItem}>
-            <View style={StyleComment.viewAvatarComment}>
-                <Image style={StyleComment.imageAvatarComment} source={{ uri: 'https://d2d0b2rxqzh1q5.cloudfront.net/sv/1.67/dir/6fa/image/6fa1d684b825ec681c8f2812c8d0334d.jpg' }} />
-            </View>
-            <View style={StyleComment.viewContentComment}>
-                <View style={StyleComment.contentComment}>
-                    <Text style={StyleComment.fontRegular}>
-                        <Text style={StyleComment.fontBold}>Minh Chau</Text>
-                        <Text>  </Text>
-                        Just give some time, I'll be ready
-                        Do my make-up, bathe in my perfume
-                        Quick shower, won't take too long
-                        I'll be done, just sing this song.
-                        So, wrap me in plastic and make me shine
-                        We can make a dollhouse, follow your design
-                        Let's build a dog out of sticks and twine
-                        I can call you master, you can call me mine.
-                    </Text>
-                </View>
-                <View style={StyleComment.viewReactComment}>
-                    <Text>50m</Text>
-                    <TouchableOpacity style={StyleComment.buttonReactComment}>
-                        <Text style={StyleComment.fontBold}>Vote</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={StyleComment.buttonReactComment} onPress={() => handleCommentRequest()}>
-                        <Text style={StyleComment.fontBold}>Reply</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            {
+                comment && (
+                    <View style={StyleComment.viewAvatarComment}>
+                        <Image style={StyleComment.imageAvatarComment} source={{ uri: comment.imageSource }} />
+                    </View>
+                )
+            }
+            {
+                comment && (
+                    <View style={StyleComment.viewContentComment}>
+                        <View>
+                            <View style={StyleComment.contentComment}>
+                                <Text style={StyleComment.fontRegular}>
+                                    <Text style={StyleComment.fontBold}>{comment.userFirstname + ' ' + comment.userLastname}</Text>
+                                    <Text>  </Text>
+                                    {comment.commentText}
+                                </Text>
+                            </View>
+                            <View style={StyleComment.viewReactComment}>
+                                <Text>{timeSince(new Date(comment.commentCreatedAt.toString()))}</Text>
+                                <TouchableOpacity style={StyleComment.buttonReactComment}>
+                                    <Text style={StyleComment.fontBold}>Vote</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={StyleComment.buttonReactComment} onPress={() => handleCommentRequest(comment.commentParentID)}>
+                                    <Text style={StyleComment.fontBold}>Reply</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        {
+                            comment.replys.map(reply =>
+                                <View key={reply.commentID} style={StyleComment.containerCommentItem}>
+                                    <View style={StyleComment.viewAvatarComment}>
+                                        <Image style={StyleComment.imageAvatarComment} source={{ uri: reply.imageSource }} />
+                                    </View>
+                                    <View style={StyleComment.viewContentComment}>
+                                        <View style={StyleComment.contentComment}>
+                                            <Text style={StyleComment.fontRegular}>
+                                                <Text style={StyleComment.fontBold}>{reply.userFirstname + ' ' + reply.userLastname}</Text>
+                                                <Text>  </Text>
+                                                {reply.commentText}
+                                            </Text>
+                                        </View>
+                                        <View style={StyleComment.viewReactComment}>
+                                            <Text>{timeSince(new Date(reply.commentCreatedAt.toString()))}</Text>
+                                            <TouchableOpacity style={StyleComment.buttonReactComment}>
+                                                <Text style={StyleComment.fontBold}>Vote</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={StyleComment.buttonReactComment} onPress={() => handleCommentRequest(reply.commentParentID)}>
+                                                <Text style={StyleComment.fontBold}>Reply</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                </View>
+                            )
+                        }
+                    </View>
+                )
+            }
+
+
         </View>
     );
 }

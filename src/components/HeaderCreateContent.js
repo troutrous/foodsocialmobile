@@ -4,7 +4,7 @@ import StyleNewFeed from '../themes/StyleNewFeed';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default HeaderCreateContent = (props) => {
-    const { handleGotoCreateContent } = props;
+    const { handleUpload } = props;
     const { handleGoBack } = props;
     return (
         <View style={StyleNewFeed.containerHeaderNewFeed}>
@@ -14,7 +14,7 @@ export default HeaderCreateContent = (props) => {
                 </TouchableOpacity>
 
             </View>
-            <TouchableOpacity onPress={handleGotoCreateContent}>
+            <TouchableOpacity onPress={() => handleUpload()}>
                 <Text style={StyleNewFeed.textHeaderNewFeed}>Upload</Text>
             </TouchableOpacity>
         </View>

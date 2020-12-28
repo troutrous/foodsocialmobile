@@ -3,6 +3,9 @@ import React, { useLayoutEffect } from 'react';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteProfile, deleteToken } from '../actions';
+import { removeProfile, removeToken } from '../commons/Storage'
 
 import Notification from '../screens/Notification';
 import Profile from '../screens/Profile';
@@ -15,15 +18,25 @@ import HeaderProfile from '../components/HeaderProfile';
 const Tab = createBottomTabNavigator();
 
 const FeedBottomTab = ({ navigation, route }) => {
+    const profileRedux = useSelector(state => state.profile);
+    const dispatch = useDispatch();
+    const handlerSignout = async () => {
+        try {
+            await Promise.all([removeProfile(), removeToken(), dispatch(deleteProfile()), dispatch(deleteToken())]);
+            navigation.navigate('SignIn');
+        } catch (error) {
+            console.log(error);
+        }
+    }
     useLayoutEffect(() => {
         if (getFocusedRouteNameFromRoute(route) == "Profile") {
-            navigation.setOptions({ headerShown: true, headerTitle: () => <HeaderProfile /> });
+            navigation.setOptions({ headerShown: true, headerTitle: () => <HeaderProfile name={profileRedux.profileFirstname + ' ' + profileRedux.profileLastname} handlerSignout={handlerSignout} /> });
         } else if (getFocusedRouteNameFromRoute(route) == "CreatePostStack") {
             navigation.setOptions({ headerShown: false });
         } else {
             navigation.setOptions({ headerShown: true, headerTitle: () => <HeaderNewFeed /> });
         }
-    })
+    });
     useLayoutEffect(() => {
         navigation.setOptions({ headerTitle: () => <HeaderNewFeed /> });
     }, [])

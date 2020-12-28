@@ -1,4 +1,4 @@
-const URL_BASE = 'http://192.168.1.15:3000';
+const URL_BASE = 'http://192.168.0.109:3000';
 
 
 export const checkExistProfileByEmail = (userEmail) => {
@@ -39,8 +39,9 @@ export const signUp = (signUpData) => {
             return Promise.all([statusCode, data, token])
         })
         .then(([statusCode, dataResponse, token]) => {
+            console.log(dataResponse);
             if (statusCode === 200 && token) {
-                return { successSignup: true, ...dataResponse, token: token};
+                return { successSignup: true, ...dataResponse, token: token };
             }
             else {
                 return { successSignup: false };
@@ -84,7 +85,7 @@ export const signIn = (signInData) => {
         });
 }
 
-export const signInWithGoogle = (user) => {
+export const signInWithGoogle = (signInData) => {
     return fetch(URL_BASE + '/auth/signinwithgoogle', {
         method: 'POST',
         cache: 'no-cache',
@@ -93,7 +94,7 @@ export const signInWithGoogle = (user) => {
             'Content-Type': 'application/json; charset = utf-8'
         },
         body: JSON.stringify({
-            ...user
+            ...signInData
         })
     })
         .then(response => {

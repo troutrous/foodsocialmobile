@@ -1,43 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, Text, TouchableWithoutFeedback, TouchableOpacity, View } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import StyleNewFeed from '../themes/StyleNewFeed';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateVoteByID, createVote } from '../api/Post';
 export default function PostNewFeed(props) {
-    const {handleCommentRequest} = props;
-    const [voteCount, setVoteCount] = useState(0);
+    const { handleCommentRequest } = props;
+    const { handlerVisible } = props;
+    const { post } = props;
+    const profileIDRedux = useSelector(state => state.profile.profileID);
+    const [voteCount, setVoteCount] = useState(post.vote.find(item => item.userID == profileIDRedux)?.voteValue || 0);
+    const [voteAVG, setVoteAVG] = useState(post.voteAVG || 0);
 
-    
+    const handleVoteCountChange = async (value) => {
+        if (!post.vote.find(item => item.userID == profileIDRedux)) {
+            const dataResponse = await createVote({
+                userID: profileIDRedux,
+                voteValue: value,
+                postID: post.postID
+            })
+            if (dataResponse.successCreate) {
+                setVoteCount(value);
+                post.vote.push({
+                    voteValue: value
+                });
+                setVoteAVGpost.vote.reduce((acc, item) => { return (acc + item.voteValue) }, 0) / post.vote.length;
+            } else {
+                console.log("Lỗi hệ thống");
+            }
+        } else {
+            const dataResponse = await updateVoteByID({
+                voteID: post.vote.find(item => item.userID == profileIDRedux).voteID,
+                voteValue: value,
+            })
+            if (dataResponse.successUpdate) {
+                post.vote.find(item => item.userID == profileIDRedux).voteValue = value;
+                setVoteCount(value);
+                setVoteAVG(post.vote.reduce((acc, item) => { return (acc + item.voteValue) }, 0) / post.vote.length);
+            } else {
+                console.log("Lỗi hệ thống");
+            }
+        }
 
-    const handleVoteCountChange = (value) => {
-        setVoteCount(value);
     }
-    
-    const handleGotoProfile = (value) => {
-        navigation.navigate('Profile');
-    }
+
+    // const handleGotoProfile = (value) => {
+    //     navigation.navigate('Profile');
+    // }
     return (
         <View style={StyleNewFeed.containerPostItemNewFeed} >
             <View style={StyleNewFeed.headerPostNewFeed}>
-                <TouchableOpacity style={StyleNewFeed.userPostNewFeed} onPress={() => handleGotoProfile()}>
-                    <Image source={require('../assets/images/logoo.jpg')} style={StyleNewFeed.avatarUserPostNewFeed} />
-                    <Text style={StyleNewFeed.nameUserPostNewFeed}>Minh Chau</Text>
+                <TouchableOpacity style={StyleNewFeed.userPostNewFeed} onPress={() => navigation.navigate('Profile')}>
+                    <Image source={{ uri: post.user.imageSource }} style={StyleNewFeed.avatarUserPostNewFeed} />
+                    <Text style={StyleNewFeed.nameUserPostNewFeed}>{post.user.userFirstname + ' ' + post.user.userLastname}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => handlerVisible(post.postID)}>
                     <MaterialCommunityIcons name={'dots-vertical'} color={'#00aff2'} size={25} style={StyleNewFeed.searchIconHeaderNewFeed} />
                 </TouchableOpacity>
             </View>
             <View style={StyleNewFeed.contentPostNewFeed}>
-                <TouchableWithoutFeedback style={StyleNewFeed.imagesContentPostNewFeed}>
-                    <Image style={StyleNewFeed.imageContentPostNewFeed} resizeMode={'contain'} source={{ uri: 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=700%2C636' }} />
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => handleCommentRequest()} style={StyleNewFeed.textsContentPostNewFeed}>
-                    <Text style={StyleNewFeed.textContentPostNewFeed}>
-                        Hà Nội nhớ em, đêm buông cơn mưa rào vào phòng anh làm ướt gối thay cho lời chào :))
-                    </Text>
-                </TouchableWithoutFeedback>
+                {
+                    post.image.length != 0 && (
+                        <TouchableWithoutFeedback style={StyleNewFeed.imagesContentPostNewFeed}>
+                            <Image style={StyleNewFeed.imageContentPostNewFeed} resizeMode={'contain'} source={{ uri: post.image[0].imageSource }} />
+                        </TouchableWithoutFeedback>
+                    )
+                }
+                {
+                    post.content.length != 0 && (
+                        <TouchableWithoutFeedback onPress={() => handleCommentRequest({ postID: post.postID })} style={StyleNewFeed.textsContentPostNewFeed}>
+                            <Text style={StyleNewFeed.textContentPostNewFeed}>
+                                {post.content[0].contentText}
+                            </Text>
+                        </TouchableWithoutFeedback>
+                    )
+                }
+
             </View>
             <View style={StyleNewFeed.containerReactPostNewFeed}>
                 <View style={StyleNewFeed.asideReactPostNewFeed}>
@@ -88,18 +129,27 @@ export default function PostNewFeed(props) {
                     }
 
                     <TouchableOpacity>
-                        <Text style={StyleNewFeed.textBold}>3.2/5</Text>
+                        <Text style={StyleNewFeed.textBold}>{voteAVG || 0}/5</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={StyleNewFeed.asideReactPostNewFeed}>
-                    <TouchableOpacity onPress={() => handleCommentRequest({ focusRequired: true })}>
+                    <TouchableOpacity onPress={() => handleCommentRequest({ focusRequired: true, postID: post.postID })}>
                         <Ionicons name='chatbox-ellipses-outline' color={'#00aff2'} size={25} style={StyleNewFeed.iconReactPostNewFeed} />
                     </TouchableOpacity>
                 </View>
             </View>
-            <View style={StyleNewFeed.containerDetailPostNewFeed}>
-                <Text style={StyleNewFeed.textLikeDetail}>Liked by <Text style={StyleNewFeed.textBold}>leomessi</Text> and <Text style={StyleNewFeed.textBold}>others</Text></Text>
-            </View>
+            {
+                post.vote.length != 0 && (
+                    <View style={StyleNewFeed.containerDetailPostNewFeed}>
+                        <Text style={StyleNewFeed.textLikeDetail}>Voted by <Text style={StyleNewFeed.textBold}>{post.vote[0].userFirstname + ' ' + post.vote[0].userLastname}</Text> and <Text style={StyleNewFeed.textBold}>others</Text></Text>
+                    </View>
+                ) || (
+                    <View style={StyleNewFeed.containerDetailPostNewFeed}>
+                        <Text style={StyleNewFeed.textLikeDetail}>Be the first to vote for this post</Text>
+                    </View>
+                )
+            }
+
             <View style={StyleNewFeed.containerCommentPostNewFeed}>
                 {/* <View style={StyleNewFeed.viewCommentPostNewFeed}>
                     <TouchableOpacity><Text style={StyleNewFeed.textBold}>justinbieber</Text></TouchableOpacity>

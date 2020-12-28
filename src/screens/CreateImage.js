@@ -54,24 +54,26 @@ const CreateImage = (props) => {
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             // do something
-            navigation.setOptions({ headerShown: true, headerTitle: () => <HeaderCreateImage handleGotoCreateContent={handleGotoCreateContent} handleGoBack={handleGoBack} /> });
+            navigation.setOptions({ headerShown: true, headerLeft: null, headerTitle: () => <HeaderCreateImage handleGotoCreateContent={handleGotoCreateContent} handleGoBack={handleGoBack} /> });
         });
 
         return unsubscribe;
     }, [navigation]);
 
     const handleGotoCreateContent = () => {
-        navigation.navigate('CreateContent');
+        navigation.navigate('CreateContent', {
+            imageuri: null
+        });
     }
     const handleGoBack = () => {
         navigation.goBack();
     }
 
     const takePicture = async function (camera) {
-        const options = { quality: 0.5, base64: true, flashMode: false, doNotSave: true };
+        const options = { quality: 0.5, base64: false, flashMode: false, doNotSave: false };
         const data = await camera.takePictureAsync(options);
         navigation.navigate('CreateContent', {
-            imageBase64: data.base64
+            imageuri: data.uri
         });
         //  eslint-disable-next-line
     };
@@ -79,19 +81,14 @@ const CreateImage = (props) => {
     const handleChoosePhoto = async (uri) => {
         if (uri) {
             try {
-                const dataBase64 = await RNFS.readFile( uri, 'base64');
+                // const dataBase64 = await RNFS.readFile( uri, 'base64');
                 navigation.navigate('CreateContent', {
-                    imageBase64: dataBase64
+                    imageuri: uri
                 });
             } catch (error) {
                 console.log(error);
             }
-
         }
-
-
-
-
     }
     return (
         <View style={StyleCreatePost.containerScreen}>

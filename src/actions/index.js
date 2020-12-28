@@ -97,6 +97,12 @@ export const addToken = (token) => {
         payload: token,
     }
 }
+export const deleteToken = () => {
+    return {
+        type: 'DELETE_TOKEN',
+        payload: null,
+    }
+}
 
 //profile
 export const addProfileID = (profileID) => {
@@ -193,7 +199,16 @@ export const addProfile = (profile) => {
             profileFollowerCount : profile.followerCount,
             profileFollowingCount : profile.followingCount,
             profileType : profile.typeprofileID,
-            profileAvatar : profile.userAvatar,
+            profileAvatar : {
+                imageID: profile.imageID,
+                imageSource: profile.imageSource
+            },
         },
+    }
+}
+export const deleteProfile = (profile) => {
+    return {
+        type: 'DELETE_PROFILE',
+        payload: null
     }
 }

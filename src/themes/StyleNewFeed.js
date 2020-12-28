@@ -27,11 +27,11 @@ const StyleNewFeed = StyleSheet.create({
         fontFamily: 'NunitoSans-ExtraBold',
     },
     containerPostNewFeed: {
-        backgroundColor : '#fff',
+        backgroundColor: '#fff',
         flex: 1,
     },
     containerPostItemNewFeed: {
-        marginTop: 10,
+        marginTop: 20,
     },
     headerPostNewFeed: {
         flexDirection: 'row',
@@ -125,7 +125,42 @@ const StyleNewFeed = StyleSheet.create({
         borderColor: '#000',
         borderWidth: 0.1,
         borderRadius: 25,
-    }
+    },
+    logoIconHeaderNewFeed: {
+        color: '#f56c42',
+    },
+    containerModal: {
+        justifyContent: 'flex-end',
+        flex: 1,
+    },
+    viewModal: {
+        flex: 0.25,
+        backgroundColor: '#000',
+        alignItems: 'center',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        opacity: 0.7,
+        overflow: 'hidden'
+    },
+    touchItemModel: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        borderBottomColor: '#fff',
+        borderBottomWidth: 1
+    },
+    backgroundRed: {
+        backgroundColor: '#f56c42',
+    },
+    backgroundBlue: {
+        backgroundColor: '#03a9f4',
+    },
+    textItemModel: {
+        fontFamily: 'NunitoSans-ExtraBold',
+        fontSize: 20,
+        color: '#fff',
+    },
 });
 
 export default StyleNewFeed;

@@ -19,40 +19,35 @@ const SignUpBOD = (props) => {
     dispatch(addSignupBOD(userBOD.toJSON().slice(0, 10)));
     navigation.navigate('SignUpGender');
   };
-  const handleWithoutFeedback = () => {
-    Keyboard.dismiss();
-  };
+
   useEffect(() => {
     Keyboard.dismiss();
   }, []);
   return (
-    <TouchableWithoutFeedback onPress={handleWithoutFeedback}>
-      <View style={StyleSignUpName.viewContainer}>
-        <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.labelHeader]}>What's your name?</Text>
-        <DatePicker
-          date={userBOD}
-          onDateChange={(value) => handleOnDateChange(value)}
-          androidVariant={'nativeAndroid'}
-          mode={'date'}
-          textColor={'#000000'}
-          maximumDate={new Date()}
-        />
-        {
-          ((Math.abs(userBOD - new Date())) / (1000 * 60 * 60 * 24) >= 365 * 12)
-          && (
-            <TouchableOpacity style={StyleSignUpName.buttonNext} onPress={handleNextSignUp}>
-              <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.textButtonNext]}>Next</Text>
-            </TouchableOpacity>)
-          || (
-            <TouchableOpacity style={[StyleSignUpName.buttonNext, StyleSignUpName.buttonNextDisabled]} disabled={true}>
-              <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.textButtonNext]}>Next</Text>
-            </TouchableOpacity>
-          )
-        }
+    <View style={StyleSignUpName.viewContainer}>
+      <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.labelHeader]}>What's your birthday?</Text>
+      <DatePicker
+        date={userBOD}
+        onDateChange={(value) => handleOnDateChange(value)}
+        androidVariant={'nativeAndroid'}
+        mode={'date'}
+        textColor={'#000000'}
+        maximumDate={new Date()}
+      />
+      {
+        ((Math.abs(userBOD - new Date())) / (1000 * 60 * 60 * 24) >= 365 * 12)
+        && (
+          <TouchableOpacity style={StyleSignUpName.buttonNext} onPress={handleNextSignUp}>
+            <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.textButtonNext]}>Next</Text>
+          </TouchableOpacity>)
+        || (
+          <TouchableOpacity style={[StyleSignUpName.buttonNext, StyleSignUpName.buttonNextDisabled]} disabled={true}>
+            <Text style={[StyleSignUpName.fontSemiBold, StyleSignUpName.textButtonNext]}>Next</Text>
+          </TouchableOpacity>
+        )
+      }
 
-      </View>
-    </TouchableWithoutFeedback>
-
+    </View>
   );
 };
 

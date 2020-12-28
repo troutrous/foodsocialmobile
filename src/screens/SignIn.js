@@ -11,19 +11,20 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback, View
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  addSignupAvatar, addSignupEmail, addSignupFirstname, addSignupIDGoogle, addSignupLastname, addSignupSignin, addSignupType,
-  addProfileID, addProfile, addToken
+  addSignupTicketGoogle, addSignupEmail, addSignupFirstname, addSignupIDGoogle, addSignupLastname, addSignupSignin, addSignupType, addProfile, addToken
 } from '../actions';
 import { signIn, signInWithGoogle } from '../api/Sign';
-// import AsyncStorage from '@react-native-community/async-storage';
+import { setToken, setProfile } from '../commons/Storage';
+
 import StyleSignIn from '../themes/StyleSignIn';
 const SignIn = (props) => {
   const { navigation } = props;
   const { route } = props
   const [userInfo, setUserInfo] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const tokenRedux = useSelector(state => state.token.idToken); 
   const dispatch = useDispatch();
   useEffect(() => {
     configureGoogleSign();
@@ -51,6 +52,8 @@ const SignIn = (props) => {
       if (dataResponse.successSignin == true) {
         dispatch(addProfile(dataResponse));
         dispatch(addToken(dataResponse.token));
+        setToken(dataResponse.token);
+        setProfile(dataResponse);
         navigation.navigate('FeedBottomTab', { screen: 'NewFeed' });
       } else if (dataResponse.successSignin == false) {
         dispatch(addSignupSignin(userGoogle.user.email));
@@ -59,7 +62,7 @@ const SignIn = (props) => {
         dispatch(addSignupFirstname(userGoogle.user.givenName));
         dispatch(addSignupLastname(userGoogle.user.familyName));
         dispatch(addSignupIDGoogle(userGoogle.user.id));
-        dispatch(addSignupAvatar(userGoogle.user.photo));
+        dispatch(addSignupTicketGoogle(userGoogle.idToken));
         navigation.navigate('SignUpStack', { screen: 'SignUpUserSignin' });
       }
 
@@ -135,6 +138,8 @@ const SignIn = (props) => {
     if (dataResponse.successSignin == true) {
       dispatch(addProfile(dataResponse));
       dispatch(addToken(dataResponse.token));
+      setToken(dataResponse.token);
+      setProfile(dataResponse);
       navigation.navigate('FeedBottomTab', { screen: 'NewFeed' });
     } else if (dataResponse.successSignin == false) {
       Alert.alert(

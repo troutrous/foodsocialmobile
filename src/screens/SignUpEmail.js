@@ -12,10 +12,6 @@ const SignUpEmail = (props) => {
     const userEmailRedux = useSelector(state => state.sign.signupEmail);
     const [userEmail, setUserEmail] = useState(userEmailRedux);
 
-    useEffect(() => {
-        console.log(userEmailRedux);
-    },[])
-
     const handleWithoutFeedback = () => {
         Keyboard.dismiss();
     };

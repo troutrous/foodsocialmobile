@@ -5,6 +5,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { useDispatch, useSelector } from 'react-redux';
 import { addSignupPhone, addProfile, addToken } from '../actions';
 import { signUp } from '../api/Sign';
+import { setToken, setProfile } from '../commons/Storage';
 
 const SignUpPhone = (props) => {
   const { navigation } = props;
@@ -27,23 +28,28 @@ const SignUpPhone = (props) => {
     setUserPhone(value);
   };
   const handleSignUp = async () => {
+    console.log(signRedux);
     const dataResponse = await signUp({
       userSignin: signRedux.signupSignin,
       userPassword: signRedux.signupPassword,
       userFirstname: signRedux.signupFirstname,
       userLastname: signRedux.signupLastname,
-      userGender: signRedux.signupEmail,
-      userEmail: signRedux.userBOD,
+      userBOD: signRedux.signupBOD,
+      userEmail: signRedux.signupEmail,
       userGender: signRedux.signupGender,
       userAddress: signRedux.signupAddress,
       userPhone: signRedux.signupPhone,
       typeprofileID: signRedux.signupTypeProfile,
+      userIDGoogle: signRedux.signupIDGoogle,
+      userTicketGoogle: signRedux.signupTicketGoogle
     });
     if (dataResponse.successSignup == true) {
       dispatch(addProfile(dataResponse));
       dispatch(addToken(dataResponse.token));
+      setToken(dataResponse.token);
+      setProfile(dataResponse);
       navigation.navigate('FeedBottomTab', { screen: 'NewFeed' });
-    } else if (ataResponse.successSignup == false) {
+    } else if (dataResponse.successSignup == false) {
       Alert.alert(
         'Thông báo',
         'Thất bại'

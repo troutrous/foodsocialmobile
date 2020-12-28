@@ -28,7 +28,7 @@ const StyleProfile = StyleSheet.create({
     imageAvatarCard: {
         flex: 1,
         borderWidth: 0.6,
-        borderColor: '#000',
+        borderColor: '#828282',
         resizeMode: 'cover',
         aspectRatio: 1,
         borderRadius: Dimensions.get('window').height / 2,
