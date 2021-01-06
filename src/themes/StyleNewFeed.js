@@ -60,26 +60,30 @@ const StyleNewFeed = StyleSheet.create({
         lineHeight: 40,
         fontSize: 15,
         paddingLeft: 10,
-        fontWeight: '700'
+        fontFamily: 'NunitoSans-Bold',
     },
     textsContentPostNewFeed: {
-        paddingHorizontal: 10
+
     },
     imagesContentPostNewFeed: {
         width: widthWindow,
+        height: widthWindow
     },
     textContentPostNewFeed: {
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        marginTop: 10
     },
     imageContentPostNewFeed: {
         width: widthWindow,
-        height: widthWindow
+        height: widthWindow,
+        borderRadius: 10
+        
     },
 
     containerReactPostNewFeed: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        height: 40
+        height: 40,
     },
     asideReactPostNewFeed: {
         flexDirection: 'row',
@@ -124,7 +128,6 @@ const StyleNewFeed = StyleSheet.create({
         width: 40,
         borderColor: '#000',
         borderWidth: 0.1,
-        borderRadius: 25,
     },
     logoIconHeaderNewFeed: {
         color: '#f56c42',
@@ -134,21 +137,19 @@ const StyleNewFeed = StyleSheet.create({
         flex: 1,
     },
     viewModal: {
-        flex: 0.25,
-        backgroundColor: '#000',
-        alignItems: 'center',
+        height: 150,
+        backgroundColor: '#fff',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        opacity: 0.7,
         overflow: 'hidden'
     },
     touchItemModel: {
-        flex: 1,
-        justifyContent: 'center',
+        height: 50,
+        justifyContent: 'flex-start',
         alignItems: 'center',
         width: '100%',
-        borderBottomColor: '#fff',
-        borderBottomWidth: 1
+        flexDirection: 'row',
+        paddingHorizontal: 20,
     },
     backgroundRed: {
         backgroundColor: '#f56c42',
@@ -157,9 +158,10 @@ const StyleNewFeed = StyleSheet.create({
         backgroundColor: '#03a9f4',
     },
     textItemModel: {
-        fontFamily: 'NunitoSans-ExtraBold',
-        fontSize: 20,
-        color: '#fff',
+        fontFamily: 'NunitoSans-Bold',
+        fontSize: 18,
+        color: '#000',
+        marginLeft: 10,
     },
 });
 

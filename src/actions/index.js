@@ -184,6 +184,7 @@ export const addProfilePostCount = (profilePostCount) => {
     }
 }
 export const addProfile = (profile) => {
+    console.log(profile);
     return {
         type: 'ADD_PROFILE',
         payload: {

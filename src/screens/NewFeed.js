@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { RefreshControl, ScrollView, View, Modal, TouchableOpacity, Text, TouchableWithoutFeedback, Alert } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
 import PostNewFeedItem from '../components/PostNewFeedItem';
 import StyleNewFeed from '../themes/StyleNewFeed';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,14 +14,23 @@ const NewFeed = (props) => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [postIDModal, setPostIDModal] = useState(null);
+    const [posts, setPosts] = useState([]);
+    const [flagModal, setFlagModal] = useState(0);
     const handlerVisible = (value) => {
         if (value) {
             setPostIDModal(value);
+            if (posts.find(post => post.postID == value).userID == profileRedux.profileID) {
+                setFlagModal(0);
+            } else {
+                setFlagModal(1);
+            }
+            setModalVisible(!modalVisible);
+        } else {
+            setModalVisible(!modalVisible);
         }
-        setModalVisible(!modalVisible);
     }
 
-    const [posts, setPosts] = useState([]);
+
 
     const handlerGetPost = async () => {
         const dataResponse = await getPost({
@@ -75,7 +84,7 @@ const NewFeed = (props) => {
                             postID: postIDModal,
                         });
                         console.log(dataResponse);
-                        if(dataResponse && dataResponse.successDelete == true){
+                        if (dataResponse && dataResponse.successDelete == true) {
                             setModalVisible(!modalVisible);
                             handlerGetPost();
                         } else {
@@ -96,7 +105,6 @@ const NewFeed = (props) => {
             }
         >
             <Modal
-
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible}
@@ -104,21 +112,33 @@ const NewFeed = (props) => {
                     Alert.alert("Modal has been closed.");
                 }}
             >
-                <TouchableWithoutFeedback onPress={handlerVisible}>
+                <TouchableWithoutFeedback onPress={() => { handlerVisible() }}>
                     <View style={StyleNewFeed.containerModal}>
                         <View style={StyleNewFeed.viewModal}>
-                            <TouchableOpacity style={[StyleNewFeed.touchItemModel, StyleNewFeed.backgroundBlue]}>
-                                <Text style={StyleNewFeed.textItemModel}>Edit</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[StyleNewFeed.touchItemModel, StyleNewFeed.backgroundBlue]} onPress={handleDeletePost}>
-                                <Text style={StyleNewFeed.textItemModel}>Delete</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[StyleNewFeed.touchItemModel, StyleNewFeed.backgroundBlue]}>
-                                <Text style={StyleNewFeed.textItemModel}>Report</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[StyleNewFeed.touchItemModel, StyleNewFeed.backgroundRed]} onPress={handlerVisible}>
-                                <Text style={[StyleNewFeed.textItemModel, StyleNewFeed.textLight]}>Cancel</Text>
-                            </TouchableOpacity>
+                            {
+                                flagModal == 0 && (
+                                    <TouchableOpacity style={[StyleNewFeed.touchItemModel]}>
+                                        <Feather name={"edit-2"} size={20} color="#000" />
+                                        <Text style={StyleNewFeed.textItemModel}>Edit</Text>
+                                    </TouchableOpacity>
+                                )
+                            }
+                            {
+                                flagModal == 0 && (
+                                    <TouchableOpacity style={[StyleNewFeed.touchItemModel]} onPress={handleDeletePost}>
+                                        <Feather name={"trash"} size={20} color="#000" />
+                                        <Text style={StyleNewFeed.textItemModel}>Delete</Text>
+                                    </TouchableOpacity>
+                                )
+                            }
+                            {
+                                (
+                                    <TouchableOpacity style={[StyleNewFeed.touchItemModel]}>
+                                        <Feather name={"flag"} size={20} color="#000" />
+                                        <Text style={StyleNewFeed.textItemModel}>Report</Text>
+                                    </TouchableOpacity>
+                                )
+                            }
                         </View>
                     </View>
                 </TouchableWithoutFeedback>

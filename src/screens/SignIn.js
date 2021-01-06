@@ -63,7 +63,7 @@ const SignIn = (props) => {
         dispatch(addSignupLastname(userGoogle.user.familyName));
         dispatch(addSignupIDGoogle(userGoogle.user.id));
         dispatch(addSignupTicketGoogle(userGoogle.idToken));
-        navigation.navigate('SignUpStack', { screen: 'SignUpUserSignin' });
+        navigation.navigate('SignUpStack', { screen: 'SignUpName' });
       }
 
     } catch (error) {
@@ -136,6 +136,7 @@ const SignIn = (props) => {
   const handleSignIn = async () => {
     const dataResponse = await signIn({ userSignin, userPassword });
     if (dataResponse.successSignin == true) {
+      console.log(dataResponse);
       dispatch(addProfile(dataResponse));
       dispatch(addToken(dataResponse.token));
       setToken(dataResponse.token);

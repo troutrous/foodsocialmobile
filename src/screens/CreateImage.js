@@ -103,7 +103,7 @@ const CreateImage = (props) => {
                             autoFocus={RNCamera.Constants.AutoFocus.on}
                             type={RNCamera.Constants.Type.back}
                             useNativeZoom={true}
-
+                            ratio={"1:1"}
                             androidCameraPermissionOptions={{
                                 title: 'Permission to use camera',
                                 message: 'We need your permission to use your camera',

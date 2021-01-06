@@ -24,6 +24,7 @@ const StyleProfile = StyleSheet.create({
     viewAvatarCard: {
         paddingHorizontal: 10,
         paddingVertical: 20,
+        overflow: 'hidden',
     },
     imageAvatarCard: {
         flex: 1,

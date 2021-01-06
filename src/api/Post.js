@@ -1,4 +1,5 @@
-const URL_BASE = 'http://192.168.0.109:3000';
+import URL_BASE from './BaseURL';
+
 
 export const getPost = (postRequest) => {
     return fetch(URL_BASE + '/post/get', {

@@ -27,7 +27,7 @@ export default function PostNewFeed(props) {
                 post.vote.push({
                     voteValue: value
                 });
-                setVoteAVGpost.vote.reduce((acc, item) => { return (acc + item.voteValue) }, 0) / post.vote.length;
+                setVoteAVG(post.vote.reduce((acc, item) => { return (acc + item.voteValue) }, 0) / post.vote.length);
             } else {
                 console.log("Lỗi hệ thống");
             }
@@ -65,7 +65,7 @@ export default function PostNewFeed(props) {
                 {
                     post.image.length != 0 && (
                         <TouchableWithoutFeedback style={StyleNewFeed.imagesContentPostNewFeed}>
-                            <Image style={StyleNewFeed.imageContentPostNewFeed} resizeMode={'contain'} source={{ uri: post.image[0].imageSource }} />
+                            <Image style={StyleNewFeed.imageContentPostNewFeed} resizeMode={'cover'} source={{ uri: post.image[0].imageSource }} />
                         </TouchableWithoutFeedback>
                     )
                 }
