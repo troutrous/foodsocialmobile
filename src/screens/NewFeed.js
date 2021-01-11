@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { RefreshControl, ScrollView, View, Modal, TouchableOpacity, Text, TouchableWithoutFeedback, Alert } from 'react-native';
+import { RefreshControl, ScrollView, View, Modal, TouchableOpacity, Text, TouchableWithoutFeedback, Alert, Keyboard } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import PostNewFeedItem from '../components/PostNewFeedItem';
 import StyleNewFeed from '../themes/StyleNewFeed';
@@ -46,6 +46,7 @@ const NewFeed = (props) => {
 
 
     useEffect(() => {
+        Keyboard.dismiss();
         handlerGetPost();
 
         return;
